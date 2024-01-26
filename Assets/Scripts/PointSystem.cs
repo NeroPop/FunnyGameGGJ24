@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class PointSystem : MonoBehaviour
 {
     [SerializeField] private int players;
@@ -35,7 +36,7 @@ public class PointSystem : MonoBehaviour
         {
             _points.Add(0);
             Button newButton = Instantiate(PlayerButton, _layoutGroup.transform);
-            //newButton.onClick.AddListener(GameObject.Find("Game Manger").GetComponent<PointSystem>().win());
+            newButton.GetComponent<ButtonClick>()._buttInt = i;
         }
 
         //_layoutGroup.cellSize = new Vector2 (_layoutGroup.flexibleWidth, 90);

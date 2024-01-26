@@ -12,6 +12,7 @@ public class PointSystem : MonoBehaviour
     [SerializeField] private int _scoreTOAdd;
     [SerializeField] private float _timer;
     [SerializeField] private float maxTime;
+    
 
     [SerializeField] private int currantPlayer;
 
@@ -25,10 +26,12 @@ public class PointSystem : MonoBehaviour
 
     [SerializeField] private Button PlayerButton;
 
+    [SerializeField] private List<Button> _buttons = new List<Button>();
+
     // Start is called before the first frame update
     void Start()
     {
-        reRoll();
+       
 
         timerBar.maxValue = maxTime;
        
@@ -37,10 +40,12 @@ public class PointSystem : MonoBehaviour
             _points.Add(0);
             Button newButton = Instantiate(PlayerButton, _layoutGroup.transform);
             newButton.GetComponent<ButtonClick>()._buttInt = i;
+            newButton.transform.GetChild(0).GetComponent<TMP_Text>().text = "" + i;
+            _buttons.Add(newButton);
         }
-
+        reRoll();
         //_layoutGroup.cellSize = new Vector2 (_layoutGroup.flexibleWidth, 90);
-        
+
     }
 
     // Update is called once per frame
@@ -58,14 +63,17 @@ public class PointSystem : MonoBehaviour
     
     void reRoll()
     {
+        _buttons[currantPlayer].GetComponent<Image>().color = Color.white;
         _timer = 0;
         _themeText.SetText(Themes[Random.Range(0, Themes.Length)]);
+        
 
         currantPlayer++;
         if (currantPlayer > _points.Count)
         {
             currantPlayer = 0;
         }
+        _buttons[currantPlayer].GetComponent<Image>().color = Color.green;
     }
 
     public void win()

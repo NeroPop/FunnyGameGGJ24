@@ -32,6 +32,8 @@ public class PointSystem : MonoBehaviour
     //Max number of rounds
     [SerializeField] private int _maxRound;
 
+    [SerializeField] private bool _PauseTimer = false;
+
     //References to UI elments
     [SerializeField] private Slider timerBar;
     [SerializeField] private string[] Themes;
@@ -70,21 +72,25 @@ public class PointSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //progresses timer
-        _timer += 1 * Time.deltaTime;
-        timerBar.value = _timer;
-
-        //resets timer if it is greater than max value ending turn and moveing to next pass stage
-        if (_timer > maxTime)
+        if (!_PauseTimer)
         {
-            _timer = 0;
-            pass();
-        }
 
-        //Ends game is currant round is greater than max round 
-        if (_currantRound >= _maxRound)
-        {
-            gameOver();
+            //progresses timer
+            _timer += 1 * Time.deltaTime;
+            timerBar.value = _timer;
+
+            //resets timer if it is greater than max value ending turn and moveing to next pass stage
+            if (_timer > maxTime)
+            {
+                _timer = 0;
+                pass();
+            }
+
+            //Ends game if currant round is greater than max round 
+            if (_currantRound >= _maxRound)
+            {
+                gameOver();
+            }
         }
 
     }
@@ -132,7 +138,7 @@ public class PointSystem : MonoBehaviour
             return;
         }
             
-
+        _PauseTimer = true;
 
         _buttons[currantPlayer].GetComponent<Image>().color = Color.white;
         if (currantPlayer == _points.Count - 1)
@@ -156,6 +162,7 @@ public class PointSystem : MonoBehaviour
         reRoll();
         _winLooseLayoutgroup.gameObject.SetActive(true);
         _layoutGroup.gameObject.SetActive(false);
+        _PauseTimer = false;
     }
 
     //end of game, shows winners and gives player options to play again or go back to main menu
@@ -174,6 +181,7 @@ public class PointSystem : MonoBehaviour
             }
         }
         _winnerText.SetText(winners + "!!!");
+        _PauseTimer = true;
     }
 
     //restarts game

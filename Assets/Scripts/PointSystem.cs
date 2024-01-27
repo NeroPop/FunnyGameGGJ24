@@ -169,6 +169,7 @@ public class PointSystem : MonoBehaviour
     {
         _winLooseLayoutgroup.gameObject.SetActive(false);
         _layoutGroup.gameObject.SetActive(true);
+
     }
 
     //enter pass phase allowing players to pass phone between each other

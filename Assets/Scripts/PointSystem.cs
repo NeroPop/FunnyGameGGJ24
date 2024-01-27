@@ -81,6 +81,7 @@ public class PointSystem : MonoBehaviour
         _winLooseLayoutgroup.gameObject.SetActive(true);
         _layoutGroup.gameObject.SetActive(false);
         _nameUI.gameObject.SetActive(false);
+        _PauseTimer = false;
 
     }
 

@@ -4,12 +4,14 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using static UnityEngine.Rendering.DebugUI;
+using Button = UnityEngine.UI.Button;
 
 
 public class PointSystem : MonoBehaviour
 {
     //Input for number of players
-    [SerializeField] private int players;
+    [SerializeField] private int playersNumber;
 
     //player points system
     private List<int> _points = new List<int>();
@@ -32,7 +34,11 @@ public class PointSystem : MonoBehaviour
     //Max number of rounds
     [SerializeField] private int _maxRound;
 
+    //Is the timer paused?
     [SerializeField] private bool _PauseTimer = false;
+
+    //List of Player Names
+    [SerializeField] private List<string> _PlayerNames = new List<string>();
 
     //References to UI elments
     [SerializeField] private Slider timerBar;
@@ -41,20 +47,28 @@ public class PointSystem : MonoBehaviour
     [SerializeField] private VerticalLayoutGroup _layoutGroup;
     [SerializeField] private VerticalLayoutGroup _winLooseLayoutgroup;
     [SerializeField] private Button PlayerButton;
+    [SerializeField] private GameObject _nameUI;
     [SerializeField] private GameObject _guessUi;
     [SerializeField] private GameObject _passUi;
     [SerializeField] private TMP_Text _passText;
     [SerializeField] private GameObject gameOverUI;
     [SerializeField] protected TMP_Text _winnerText;
+    [SerializeField] private TMP_InputField _NameInput;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
+    {
+        _nameUI.gameObject.SetActive(true);
+    }
+
+    //BeginGame is called once the number of players and their names have been assigned
+    public void BeginGame()
     {
         //sets timebar maxvalue to maxtime
         timerBar.maxValue = maxTime;
        
         //add a elment to the points list for every player in the game
-        for (int i = 0; i < players; i++)
+        for (int i = 0; i < playersNumber; i++)
         {
             _points.Add(0);
             Button newButton = Instantiate(PlayerButton, _layoutGroup.transform);
@@ -66,12 +80,14 @@ public class PointSystem : MonoBehaviour
 
         _winLooseLayoutgroup.gameObject.SetActive(true);
         _layoutGroup.gameObject.SetActive(false);
+        _nameUI.gameObject.SetActive(false);
 
     }
 
     // Update is called once per frame
     void Update()
     {
+        //only runs the following code when pause time is not true.
         if (!_PauseTimer)
         {
 
@@ -188,5 +204,33 @@ public class PointSystem : MonoBehaviour
     public void Restart()
     {
         SceneManager.LoadScene("Main");
+    }
+
+    public void AddName()
+    {
+        // Get the text from the TMP Input Field
+        string playerName = _NameInput.text;
+
+        // Check if the input is not empty
+        if (!string.IsNullOrEmpty(playerName))
+        {
+            // Add the player name to the list
+            _PlayerNames.Add(playerName);
+
+            // Update the number of players
+            playersNumber = _PlayerNames.Count;
+
+            // Optionally, you can print the names and number of players
+            Debug.Log("Player Names: " + string.Join(", ", _PlayerNames.ToArray()));
+            Debug.Log("Number of Players: " + playersNumber);
+        }
+        else
+        {
+            // Handle empty input
+            Debug.LogWarning("Please enter a valid player name");
+        }
+
+        // Clear the TMP Input Field after adding the name
+        _NameInput.text = "";
     }
 }

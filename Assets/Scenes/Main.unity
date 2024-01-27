@@ -2981,6 +2981,7 @@ MonoBehaviour:
   gameOverUI: {fileID: 1683811475}
   _winnerText: {fileID: 368127040}
   _NameInput: {fileID: 1726815673}
+  _PlayerCountTxt: {fileID: 1572071342}
 --- !u!4 &1448107603
 Transform:
   m_ObjectHideFlags: 0

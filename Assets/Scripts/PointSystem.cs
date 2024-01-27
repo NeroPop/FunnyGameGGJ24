@@ -54,6 +54,7 @@ public class PointSystem : MonoBehaviour
     [SerializeField] private GameObject gameOverUI;
     [SerializeField] protected TMP_Text _winnerText;
     [SerializeField] private TMP_InputField _NameInput;
+    [SerializeField] private TMP_Text _PlayerCountTxt;
 
     // Start is called before the first frame update
     private void Start()
@@ -82,7 +83,6 @@ public class PointSystem : MonoBehaviour
         _layoutGroup.gameObject.SetActive(false);
         _nameUI.gameObject.SetActive(false);
         _PauseTimer = false;
-
     }
 
     // Update is called once per frame
@@ -233,5 +233,6 @@ public class PointSystem : MonoBehaviour
 
         // Clear the TMP Input Field after adding the name
         _NameInput.text = "";
+        _PlayerCountTxt.text = playersNumber.ToString();
     }
 }

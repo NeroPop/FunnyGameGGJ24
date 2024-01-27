@@ -54,16 +54,26 @@ public class PointSystem : MonoBehaviour
     [SerializeField] private GameObject gameOverUI;
     [SerializeField] protected TMP_Text _winnerText;
     [SerializeField] private TMP_InputField _NameInput;
+    [SerializeField] private TMP_Text _PlayerCountTxt;
+
+    [SerializeField] private TMP_Text _roundNumText;
+    [SerializeField] private Slider _roundNumSlider;
+
+    private bool _startOfGame = true;
 
     // Start is called before the first frame update
     private void Start()
     {
         _nameUI.gameObject.SetActive(true);
+        
     }
 
     //BeginGame is called once the number of players and their names have been assigned
     public void BeginGame()
     {
+        if (_PlayerNames.Count < 2)
+            return;
+
         //sets timebar maxvalue to maxtime
         timerBar.maxValue = maxTime;
        
@@ -73,7 +83,7 @@ public class PointSystem : MonoBehaviour
             _points.Add(0);
             Button newButton = Instantiate(PlayerButton, _layoutGroup.transform);
             newButton.GetComponent<ButtonClick>()._buttInt = i;
-            newButton.transform.GetChild(0).GetComponent<TMP_Text>().text = "" + i;
+            newButton.transform.GetChild(0).GetComponent<TMP_Text>().text = "" + _PlayerNames[i].ToString();
             _buttons.Add(newButton);
         }
         pass();
@@ -81,7 +91,7 @@ public class PointSystem : MonoBehaviour
         _winLooseLayoutgroup.gameObject.SetActive(true);
         _layoutGroup.gameObject.SetActive(false);
         _nameUI.gameObject.SetActive(false);
-
+        _PauseTimer = false;
     }
 
     // Update is called once per frame
@@ -108,6 +118,8 @@ public class PointSystem : MonoBehaviour
                 gameOver();
             }
         }
+        
+       
 
     }
 
@@ -157,17 +169,24 @@ public class PointSystem : MonoBehaviour
         _PauseTimer = true;
 
         _buttons[currantPlayer].GetComponent<Image>().color = Color.white;
-        if (currantPlayer == _points.Count - 1)
+        
+        if (_startOfGame == false)
         {
-            currantPlayer = 0;
-            _currantRound++;
+            
+
+            if (currantPlayer == _points.Count - 1)
+            {
+                currantPlayer = 0;
+                _currantRound++;
+            }
+            else
+                currantPlayer++;
         }
-        else
-            currantPlayer++;
+        _startOfGame = false;
 
         _passUi.SetActive(true);
         _guessUi.SetActive(false);
-        _passText.SetText(currantPlayer + "!");
+        _passText.SetText(_PlayerNames[currantPlayer].ToString() + "!");
     }
 
     //progresses to next phase when player click redy button in pase phase
@@ -193,7 +212,7 @@ public class PointSystem : MonoBehaviour
         {
             if (_points[i] == maxValue)
             {
-                winners += i + " ";
+                winners += _PlayerNames[i].ToString() + " ";
             }
         }
         _winnerText.SetText(winners + "!!!");
@@ -232,5 +251,12 @@ public class PointSystem : MonoBehaviour
 
         // Clear the TMP Input Field after adding the name
         _NameInput.text = "";
+        _PlayerCountTxt.text = playersNumber.ToString();
+    }
+
+    public void roundNumChange()
+    {
+        _roundNumText.SetText("Rounds: " + _roundNumSlider.value.ToString());
+        _maxRound = (int) _roundNumSlider.value;
     }
 }

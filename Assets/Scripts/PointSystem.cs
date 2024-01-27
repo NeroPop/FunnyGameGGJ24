@@ -56,15 +56,24 @@ public class PointSystem : MonoBehaviour
     [SerializeField] private TMP_InputField _NameInput;
     [SerializeField] private TMP_Text _PlayerCountTxt;
 
+    [SerializeField] private TMP_Text _roundNumText;
+    [SerializeField] private Slider _roundNumSlider;
+
+    private bool _startOfGame = true;
+
     // Start is called before the first frame update
     private void Start()
     {
         _nameUI.gameObject.SetActive(true);
+        
     }
 
     //BeginGame is called once the number of players and their names have been assigned
     public void BeginGame()
     {
+        if (_PlayerNames.Count < 2)
+            return;
+
         //sets timebar maxvalue to maxtime
         timerBar.maxValue = maxTime;
        
@@ -109,6 +118,8 @@ public class PointSystem : MonoBehaviour
                 gameOver();
             }
         }
+        
+       
 
     }
 
@@ -158,13 +169,20 @@ public class PointSystem : MonoBehaviour
         _PauseTimer = true;
 
         _buttons[currantPlayer].GetComponent<Image>().color = Color.white;
-        if (currantPlayer == _points.Count - 1)
+        
+        if (_startOfGame == false)
         {
-            currantPlayer = 0;
-            _currantRound++;
+            
+
+            if (currantPlayer == _points.Count - 1)
+            {
+                currantPlayer = 0;
+                _currantRound++;
+            }
+            else
+                currantPlayer++;
         }
-        else
-            currantPlayer++;
+        _startOfGame = false;
 
         _passUi.SetActive(true);
         _guessUi.SetActive(false);
@@ -234,5 +252,11 @@ public class PointSystem : MonoBehaviour
         // Clear the TMP Input Field after adding the name
         _NameInput.text = "";
         _PlayerCountTxt.text = playersNumber.ToString();
+    }
+
+    public void roundNumChange()
+    {
+        _roundNumText.SetText("Rounds: " + _roundNumSlider.value.ToString());
+        _maxRound = (int) _roundNumSlider.value;
     }
 }

@@ -37,27 +37,31 @@ public class PointSystem : MonoBehaviour
     //Is the timer paused?
     [SerializeField] private bool _PauseTimer = false;
 
-    //List of Player Names
-    [SerializeField] private List<string> _PlayerNames = new List<string>();
-
     //References to UI elments
+    [Header ("UI Panels")]
+    [SerializeField] private GameObject _nameUI;
+    [SerializeField] private GameObject _guessUi;
+    [SerializeField] private GameObject _passUi;
+    [SerializeField] private GameObject gameOverUI;
+
+    [Header("UI Elements")]
     [SerializeField] private Slider timerBar;
-    [SerializeField] private string[] Themes;
     [SerializeField] private TMP_Text _themeText;
     [SerializeField] private VerticalLayoutGroup _layoutGroup;
     [SerializeField] private VerticalLayoutGroup _winLooseLayoutgroup;
     [SerializeField] private Button PlayerButton;
-    [SerializeField] private GameObject _nameUI;
-    [SerializeField] private GameObject _guessUi;
-    [SerializeField] private GameObject _passUi;
     [SerializeField] private TMP_Text _passText;
-    [SerializeField] private GameObject gameOverUI;
     [SerializeField] protected TMP_Text _winnerText;
     [SerializeField] private TMP_InputField _NameInput;
     [SerializeField] private TMP_Text _PlayerCountTxt;
-
     [SerializeField] private TMP_Text _roundNumText;
     [SerializeField] private Slider _roundNumSlider;
+
+    //List of themes
+    [SerializeField] private string[] Themes;
+
+    //List of Player Names
+    [SerializeField] private List<string> _PlayerNames = new List<string>();
 
     private bool _startOfGame = true;
 

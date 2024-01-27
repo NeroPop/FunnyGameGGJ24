@@ -31,8 +31,6 @@ public class PointSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       
-
         timerBar.maxValue = maxTime;
        
         for (int i = 0; i < players; i++)
@@ -63,16 +61,19 @@ public class PointSystem : MonoBehaviour
     
     void reRoll()
     {
+        
         _buttons[currantPlayer].GetComponent<Image>().color = Color.white;
         _timer = 0;
         _themeText.SetText(Themes[Random.Range(0, Themes.Length)]);
-        
 
-        currantPlayer++;
-        if (currantPlayer > _points.Count)
+
+
+        if (currantPlayer == _points.Count - 1)
         {
             currantPlayer = 0;
         }
+        else
+            currantPlayer++;
         _buttons[currantPlayer].GetComponent<Image>().color = Color.green;
     }
 
@@ -85,6 +86,5 @@ public class PointSystem : MonoBehaviour
     public void fail()
     {
         reRoll();
-        print("You scuk!");
     }
 }

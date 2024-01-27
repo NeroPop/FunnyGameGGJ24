@@ -259,4 +259,9 @@ public class PointSystem : MonoBehaviour
         _roundNumText.SetText("Rounds: " + _roundNumSlider.value.ToString());
         _maxRound = (int) _roundNumSlider.value;
     }
+
+    public void quit()
+    {
+        Application.Quit();
+    }
 }

@@ -22,11 +22,16 @@ public class PointSystem : MonoBehaviour
 
     [SerializeField] private TMP_Text _themeText;
 
-    [SerializeField] private GridLayoutGroup _layoutGroup;
+    [SerializeField] private VerticalLayoutGroup _layoutGroup;
+
+    [SerializeField] private VerticalLayoutGroup _winLooseLayoutgroup;
 
     [SerializeField] private Button PlayerButton;
 
     [SerializeField] private List<Button> _buttons = new List<Button>();
+
+    [SerializeField] private int _currantRound;
+    [SerializeField] private int _maxRound;
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +49,9 @@ public class PointSystem : MonoBehaviour
         reRoll();
         //_layoutGroup.cellSize = new Vector2 (_layoutGroup.flexibleWidth, 90);
 
+        _winLooseLayoutgroup.gameObject.SetActive(true);
+        _layoutGroup.gameObject.SetActive(false);
+
     }
 
     // Update is called once per frame
@@ -56,12 +64,19 @@ public class PointSystem : MonoBehaviour
         {
             reRoll();
         }
+
+        if (_currantRound >= _maxRound)
+        {
+            print("Game End");
+        }
     }
 
     
     void reRoll()
     {
-        
+        if (_currantRound >= _maxRound)
+            return;
+
         _buttons[currantPlayer].GetComponent<Image>().color = Color.white;
         _timer = 0;
         _themeText.SetText(Themes[Random.Range(0, Themes.Length)]);
@@ -71,6 +86,7 @@ public class PointSystem : MonoBehaviour
         if (currantPlayer == _points.Count - 1)
         {
             currantPlayer = 0;
+            _currantRound++;
         }
         else
             currantPlayer++;
@@ -81,10 +97,18 @@ public class PointSystem : MonoBehaviour
     {
         reRoll();
         _points[currantPlayer]++;
+        _winLooseLayoutgroup.gameObject.SetActive(true);
+        _layoutGroup.gameObject.SetActive(false);
     }
 
     public void fail()
     {
         reRoll();
+    }
+
+    public void laugh()
+    {
+        _winLooseLayoutgroup.gameObject.SetActive(false);
+        _layoutGroup.gameObject.SetActive(true);
     }
 }

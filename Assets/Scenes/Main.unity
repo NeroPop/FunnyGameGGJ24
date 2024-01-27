@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 72deae4d18418f94688abef8e8483df0, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -37,8 +37,8 @@ RenderSettings:
   m_ReflectionBounces: 1
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
-  m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_Sun: {fileID: 633421368}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 4007b3fe0791c954088b1892ddd34678, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -220,6 +220,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 721450400}
+  - {fileID: 1212820693}
   m_Father: {fileID: 1860333461}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -264,8 +265,8 @@ Camera:
   m_GameObject: {fileID: 268431549}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.71827155, g: 0.52287287, b: 0.8867924, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -649,13 +650,13 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1221991498}
-  m_Father: {fileID: 1860333461}
+  m_Father: {fileID: 261857497}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -20, y: 0}
+  m_AnchoredPosition: {x: 4.9999695, y: 0}
+  m_SizeDelta: {x: 0, y: 125.69}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1221991497
 GameObject:
@@ -762,7 +763,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11998da45d4e02f4aac368b0ae2ef57d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  players: 10
+  players: 6
   _points: 
   _scoreTOAdd: 1
   _timer: 0
@@ -775,11 +776,12 @@ MonoBehaviour:
   - Mr Blobby
   - wow
   - 'So cool '
-  - I am running out fo things to type
+  - typed in here
   - Who am I
   - I have no mout but I must scream
   - bottle
   - Lemon
+  - Jack was here
   _themeText: {fileID: 1908514877}
   _layoutGroup: {fileID: 545388528}
   PlayerButton: {fileID: 7944294134374013552, guid: 0d0441ea623bebb4a9b467e497ccdec2, type: 3}
@@ -935,7 +937,6 @@ RectTransform:
   m_Children:
   - {fileID: 2010628407}
   - {fileID: 261857497}
-  - {fileID: 1212820693}
   m_Father: {fileID: 1535743433}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

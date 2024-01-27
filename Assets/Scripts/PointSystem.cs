@@ -74,7 +74,7 @@ public class PointSystem : MonoBehaviour
             _points.Add(0);
             Button newButton = Instantiate(PlayerButton, _layoutGroup.transform);
             newButton.GetComponent<ButtonClick>()._buttInt = i;
-            newButton.transform.GetChild(0).GetComponent<TMP_Text>().text = "" + i;
+            newButton.transform.GetChild(0).GetComponent<TMP_Text>().text = "" + _PlayerNames[i].ToString();
             _buttons.Add(newButton);
         }
         pass();
@@ -168,7 +168,7 @@ public class PointSystem : MonoBehaviour
 
         _passUi.SetActive(true);
         _guessUi.SetActive(false);
-        _passText.SetText(currantPlayer + "!");
+        _passText.SetText(_PlayerNames[currantPlayer].ToString() + "!");
     }
 
     //progresses to next phase when player click redy button in pase phase
@@ -194,7 +194,7 @@ public class PointSystem : MonoBehaviour
         {
             if (_points[i] == maxValue)
             {
-                winners += i + " ";
+                winners += _PlayerNames[i].ToString() + " ";
             }
         }
         _winnerText.SetText(winners + "!!!");

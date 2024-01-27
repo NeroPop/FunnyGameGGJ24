@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
 public class PointSystem : MonoBehaviour
@@ -12,7 +13,7 @@ public class PointSystem : MonoBehaviour
     [SerializeField] private int _scoreTOAdd;
     [SerializeField] private float _timer;
     [SerializeField] private float maxTime;
-    
+
 
     [SerializeField] private int currantPlayer;
 
@@ -33,6 +34,12 @@ public class PointSystem : MonoBehaviour
     [SerializeField] private int _currantRound;
     [SerializeField] private int _maxRound;
 
+    [SerializeField] private GameObject _guessUi;
+    [SerializeField] private GameObject _passUi;
+    [SerializeField] private TMP_Text _passText;
+    [SerializeField] private GameObject gameOverUI;
+    [SerializeField] protected TMP_Text _winnerText;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -46,7 +53,7 @@ public class PointSystem : MonoBehaviour
             newButton.transform.GetChild(0).GetComponent<TMP_Text>().text = "" + i;
             _buttons.Add(newButton);
         }
-        reRoll();
+        pass();
         //_layoutGroup.cellSize = new Vector2 (_layoutGroup.flexibleWidth, 90);
 
         _winLooseLayoutgroup.gameObject.SetActive(true);
@@ -62,43 +69,39 @@ public class PointSystem : MonoBehaviour
 
         if (_timer > maxTime)
         {
-            reRoll();
+            _timer = 0;
+            pass();
         }
 
         if (_currantRound >= _maxRound)
         {
-            print("Game End");
+            gameOver();
         }
+
     }
 
     
+    
     void reRoll()
     {
-        if (_currantRound >= _maxRound)
+        if (_currantRound >= _maxRound) 
             return;
+ 
 
-        _buttons[currantPlayer].GetComponent<Image>().color = Color.white;
         _timer = 0;
         _themeText.SetText(Themes[Random.Range(0, Themes.Length)]);
 
 
 
-        if (currantPlayer == _points.Count - 1)
-        {
-            currantPlayer = 0;
-            _currantRound++;
-        }
-        else
-            currantPlayer++;
+        
         _buttons[currantPlayer].GetComponent<Image>().color = Color.green;
     }
 
     public void win()
     {
-        reRoll();
+        pass();
         _points[currantPlayer]++;
-        _winLooseLayoutgroup.gameObject.SetActive(true);
-        _layoutGroup.gameObject.SetActive(false);
+        
     }
 
     public void fail()
@@ -110,5 +113,60 @@ public class PointSystem : MonoBehaviour
     {
         _winLooseLayoutgroup.gameObject.SetActive(false);
         _layoutGroup.gameObject.SetActive(true);
+    }
+
+    void pass()
+    {
+        if (_currantRound >= _maxRound)
+        {
+            gameOver();
+            return;
+        }
+            
+
+
+        _buttons[currantPlayer].GetComponent<Image>().color = Color.white;
+        if (currantPlayer == _points.Count - 1)
+        {
+            currantPlayer = 0;
+            _currantRound++;
+        }
+        else
+            currantPlayer++;
+
+        _passUi.SetActive(true);
+        _guessUi.SetActive(false);
+        _passText.SetText(currantPlayer + "!");
+    }
+
+    public void ready()
+    {
+        _passUi.SetActive(false);
+        _guessUi.SetActive(true);
+        reRoll();
+        _winLooseLayoutgroup.gameObject.SetActive(true);
+        _layoutGroup.gameObject.SetActive(false);
+    }
+
+    void gameOver()
+    {
+        string winners = "";
+        _guessUi.SetActive(false);
+        _passUi.SetActive(false);
+        gameOverUI.SetActive(true);
+        var maxValue = Mathf.Max(_points.ToArray());
+        for (int i = 0; i < _points.Count; i++)
+        {
+            if (_points[i] == maxValue)
+            {
+                winners += i + " ";
+            }
+        }
+        _winnerText.SetText(winners + "!!!");
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene("Main");
     }
 }

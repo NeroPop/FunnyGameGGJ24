@@ -8,32 +8,37 @@ using UnityEngine.SceneManagement;
 
 public class PointSystem : MonoBehaviour
 {
+    //Input for number of players
     [SerializeField] private int players;
-    [SerializeField] private List<int> _points = new List<int>();
-    [SerializeField] private int _scoreTOAdd;
-    [SerializeField] private float _timer;
+
+    //player points system
+    private List<int> _points = new List<int>();
+    
+    //currant time on timer
+    private float _timer;
+
+    //max time/ timelimit
     [SerializeField] private float maxTime;
 
+    //currantly selected player
+    private int currantPlayer;
+  
+    //player point give buttons
+    private List<Button> _buttons = new List<Button>();
 
-    [SerializeField] private int currantPlayer;
+    //Currant round
+    private int _currantRound;
 
-    [SerializeField] private Slider timerBar;
-
-    [SerializeField] private string[] Themes;
-
-    [SerializeField] private TMP_Text _themeText;
-
-    [SerializeField] private VerticalLayoutGroup _layoutGroup;
-
-    [SerializeField] private VerticalLayoutGroup _winLooseLayoutgroup;
-
-    [SerializeField] private Button PlayerButton;
-
-    [SerializeField] private List<Button> _buttons = new List<Button>();
-
-    [SerializeField] private int _currantRound;
+    //Max number of rounds
     [SerializeField] private int _maxRound;
 
+    //References to UI elments
+    [SerializeField] private Slider timerBar;
+    [SerializeField] private string[] Themes;
+    [SerializeField] private TMP_Text _themeText;
+    [SerializeField] private VerticalLayoutGroup _layoutGroup;
+    [SerializeField] private VerticalLayoutGroup _winLooseLayoutgroup;
+    [SerializeField] private Button PlayerButton;
     [SerializeField] private GameObject _guessUi;
     [SerializeField] private GameObject _passUi;
     [SerializeField] private TMP_Text _passText;
@@ -43,8 +48,10 @@ public class PointSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //sets timebar maxvalue to maxtime
         timerBar.maxValue = maxTime;
        
+        //add a elment to the points list for every player in the game
         for (int i = 0; i < players; i++)
         {
             _points.Add(0);
@@ -54,7 +61,6 @@ public class PointSystem : MonoBehaviour
             _buttons.Add(newButton);
         }
         pass();
-        //_layoutGroup.cellSize = new Vector2 (_layoutGroup.flexibleWidth, 90);
 
         _winLooseLayoutgroup.gameObject.SetActive(true);
         _layoutGroup.gameObject.SetActive(false);
@@ -64,15 +70,18 @@ public class PointSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //progresses timer
         _timer += 1 * Time.deltaTime;
         timerBar.value = _timer;
 
+        //resets timer if it is greater than max value ending turn and moveing to next pass stage
         if (_timer > maxTime)
         {
             _timer = 0;
             pass();
         }
 
+        //Ends game is currant round is greater than max round 
         if (_currantRound >= _maxRound)
         {
             gameOver();
@@ -81,22 +90,19 @@ public class PointSystem : MonoBehaviour
     }
 
     
-    
+    //preps game for next round
     void reRoll()
     {
         if (_currantRound >= _maxRound) 
             return;
  
-
         _timer = 0;
         _themeText.SetText(Themes[Random.Range(0, Themes.Length)]);
 
-
-
-        
         _buttons[currantPlayer].GetComponent<Image>().color = Color.green;
     }
 
+    //awards points to player who won
     public void win()
     {
         pass();
@@ -104,17 +110,20 @@ public class PointSystem : MonoBehaviour
         
     }
 
+    //Don't think this dose anything anymore but to afried to get rid of it...
     public void fail()
     {
         reRoll();
     }
 
+    //dissables buffer button activating player buttons
     public void laugh()
     {
         _winLooseLayoutgroup.gameObject.SetActive(false);
         _layoutGroup.gameObject.SetActive(true);
     }
 
+    //enter pass phase allowing players to pass phone between each other
     void pass()
     {
         if (_currantRound >= _maxRound)
@@ -139,6 +148,7 @@ public class PointSystem : MonoBehaviour
         _passText.SetText(currantPlayer + "!");
     }
 
+    //progresses to next phase when player click redy button in pase phase
     public void ready()
     {
         _passUi.SetActive(false);
@@ -148,6 +158,7 @@ public class PointSystem : MonoBehaviour
         _layoutGroup.gameObject.SetActive(false);
     }
 
+    //end of game, shows winners and gives player options to play again or go back to main menu
     void gameOver()
     {
         string winners = "";
@@ -165,6 +176,7 @@ public class PointSystem : MonoBehaviour
         _winnerText.SetText(winners + "!!!");
     }
 
+    //restarts game
     public void Restart()
     {
         SceneManager.LoadScene("Main");

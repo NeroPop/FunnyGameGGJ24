@@ -4,10 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using static UnityEngine.Rendering.DebugUI;
 using Button = UnityEngine.UI.Button;
-using UnityEditor.Animations;
-using Unity.VisualScripting.Antlr3.Runtime.Tree;
 
 public class PointSystem : MonoBehaviour
 {

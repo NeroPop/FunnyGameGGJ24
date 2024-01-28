@@ -21,7 +21,7 @@ public class BackgroundScroll : MonoBehaviour
         if (!componentsGotten)
         { 
             material = crenderer.GetMaterial();
-            Debug.Log(material.GetTextureOffset("_MainTex"));
+            //Debug.Log(material.GetTextureOffset("_MainTex"));
             material.SetTextureOffset("_MainTex", new Vector2(0, 0));
 
             componentsGotten = true;

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using static UnityEngine.Rendering.DebugUI;
 using Button = UnityEngine.UI.Button;
-
+using UnityEditor.Animations;
 
 public class PointSystem : MonoBehaviour
 {
@@ -14,7 +14,7 @@ public class PointSystem : MonoBehaviour
     [SerializeField] private int playersNumber;
 
     //player points system
-    private List<int> _points = new List<int>();
+    [SerializeField] private List<int> _points = new List<int>();
     
     //currant time on timer
     private float _timer;
@@ -29,7 +29,7 @@ public class PointSystem : MonoBehaviour
     private List<Button> _buttons = new List<Button>();
 
     //Currant round
-    private int _currantRound;
+    [SerializeField] private int _currantRound;
 
     //Max number of rounds
     [SerializeField] private int _maxRound;
@@ -91,7 +91,10 @@ public class PointSystem : MonoBehaviour
         //sets timebar maxvalue to maxtime
         timerBar.maxValue = maxTime;
 
-        _points.Add(0);
+        for (int i = 0; i < playersNumber; i++)
+        {
+            _points.Add(0);
+        }
 
         pass();
 
@@ -119,11 +122,11 @@ public class PointSystem : MonoBehaviour
                 pass();
             }
 
-            //Ends game if currant round is greater than max round 
-            if (_currantRound >= _maxRound)
-            {
-                gameOver();
-            }
+            ////Ends game if currant round is greater than max round 
+            //if (_currantRound >= _maxRound)
+            //{
+            //    gameOver();
+            //}
         }
 
     }
@@ -137,48 +140,32 @@ public class PointSystem : MonoBehaviour
  
         _timer = 0;
         _themeText.SetText(Themes[Random.Range(0, Themes.Length)]);
-
-        _buttons[currantPlayer].GetComponent<Image>().color = Color.green;
     }
 
     //awards points to player who won
     public void win()
     {
-        pass();
         _points[currantPlayer]++;
-        
+        pass();
+
     }
 
     //Don't think this dose anything anymore but to afried to get rid of it...
-    public void fail()
-    {
-        reRoll();
-    }
+   
 
     //dissables buffer button activating player buttons
     public void laugh()
     {
         //insert some code here that gives the current host a point :)
-        _winLooseLayoutgroup.gameObject.SetActive(false);
-        _layoutGroup.gameObject.SetActive(true);
+        //_winLooseLayoutgroup.gameObject.SetActive(false);
+        //_layoutGroup.gameObject.SetActive(true);
         win();
 
     }
 
-    public void Guessed()
-    {
-        //add a elment to the points list for every player in the game except host
-        for (int i = 0; i < playersNumber; i++)
-        {
-            if (i != currantPlayer)
-            {
-                Button newButton = Instantiate(PlayerButton, _layoutGroup.transform);
-                newButton.GetComponent<ButtonClick>()._buttInt = i;
-                newButton.transform.GetChild(0).GetComponent<TMP_Text>().text = "" + _PlayerNames[i].ToString();
-                _buttons.Add(newButton);
-            }
-        }
 
+    public void Guessed()
+    { 
         _winLooseLayoutgroup.gameObject.SetActive(false);
         _layoutGroup.gameObject.SetActive(true);
     }
@@ -186,32 +173,24 @@ public class PointSystem : MonoBehaviour
     //enter pass phase allowing players to pass phone between each other
     void pass()
     {
-        if (_currantRound >= _maxRound)
+
+        for (int d = _layoutGroup.transform.childCount - 1; d >= 0; d--)
         {
-            gameOver();
-            return;
+            Destroy(_layoutGroup.transform.GetChild(d).gameObject);
         }
-            
+
+        
+        
+
         _PauseTimer = true;
 
-        //add a elment to the points list for every player in the game except host
-        for (int i = 0; i < playersNumber; i++)
-        {
-            if (i != currantPlayer)
-            {
-                Button newButton = Instantiate(PlayerButton, _layoutGroup.transform);
-                newButton.GetComponent<ButtonClick>()._buttInt = i;
-                newButton.transform.GetChild(0).GetComponent<TMP_Text>().text = "" + _PlayerNames[i].ToString();
-                _buttons.Add(newButton);
-            }
-        }
+        
 
+        
 
         if (_startOfGame == false)
         {
-            
-
-            if (currantPlayer == _points.Count - 1)
+            if (currantPlayer == _PlayerNames.Count - 1)
             {
                 currantPlayer = 0;
                 _currantRound++;
@@ -221,11 +200,30 @@ public class PointSystem : MonoBehaviour
         }
         _startOfGame = false;
 
-        _buttons[currantPlayer].GetComponent<Image>().color = Color.white;
+        //add a elment to the points list for every player in the game except host
+        for (int i = 0; i < playersNumber; i++)
+        {
+            if (i != currantPlayer)
+            {
+                Button newButton = Instantiate(PlayerButton, _layoutGroup.transform);
+                newButton.GetComponent<ButtonClick>()._buttInt = i;
+                newButton.transform.GetChild(0).GetComponent<TMP_Text>().text = "" + _PlayerNames[i].ToString();
+                _buttons.Add(newButton);
+            }
+        }
+
+
+        if (_currantRound >= _maxRound)
+        {
+            gameOver();
+            return;
+        }
+
 
         _passUi.SetActive(true);
         _guessUi.SetActive(false);
         _passText.SetText(_PlayerNames[currantPlayer].ToString() + "!");
+
     }
 
     //progresses to next phase when player click redy button in pase phase
@@ -247,10 +245,12 @@ public class PointSystem : MonoBehaviour
         _passUi.SetActive(false);
         gameOverUI.SetActive(true);
         var maxValue = Mathf.Max(_points.ToArray());
-        for (int i = 0; i < _points.Count; i++)
+        for (int i = 0; i < _PlayerNames.Count; i++)
         {
+            print(maxValue);
             if (_points[i] == maxValue)
             {
+                print(i);
                 winners += _PlayerNames[i].ToString() + " ";
             }
         }
@@ -279,13 +279,13 @@ public class PointSystem : MonoBehaviour
             playersNumber = _PlayerNames.Count;
 
             // Optionally, you can print the names and number of players
-            Debug.Log("Player Names: " + string.Join(", ", _PlayerNames.ToArray()));
-            Debug.Log("Number of Players: " + playersNumber);
+            //Debug.Log("Player Names: " + string.Join(", ", _PlayerNames.ToArray()));
+            //Debug.Log("Number of Players: " + playersNumber);
         }
         else
         {
             // Handle empty input
-            Debug.LogWarning("Please enter a valid player name");
+            //Debug.LogWarning("Please enter a valid player name");
         }
 
         // Clear the TMP Input Field after adding the name

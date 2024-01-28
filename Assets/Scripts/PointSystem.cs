@@ -90,16 +90,9 @@ public class PointSystem : MonoBehaviour
 
         //sets timebar maxvalue to maxtime
         timerBar.maxValue = maxTime;
-       
-        //add a elment to the points list for every player in the game
-        for (int i = 0; i < playersNumber; i++)
-        {
-            _points.Add(0);
-            Button newButton = Instantiate(PlayerButton, _layoutGroup.transform);
-            newButton.GetComponent<ButtonClick>()._buttInt = i;
-            newButton.transform.GetChild(0).GetComponent<TMP_Text>().text = "" + _PlayerNames[i].ToString();
-            _buttons.Add(newButton);
-        }
+
+        _points.Add(0);
+
         pass();
 
         _winLooseLayoutgroup.gameObject.SetActive(true);
@@ -132,8 +125,6 @@ public class PointSystem : MonoBehaviour
                 gameOver();
             }
         }
-        
-       
 
     }
 
@@ -167,9 +158,29 @@ public class PointSystem : MonoBehaviour
     //dissables buffer button activating player buttons
     public void laugh()
     {
+        //insert some code here that gives the current host a point :)
         _winLooseLayoutgroup.gameObject.SetActive(false);
         _layoutGroup.gameObject.SetActive(true);
+        win();
 
+    }
+
+    public void Guessed()
+    {
+        //add a elment to the points list for every player in the game except host
+        for (int i = 0; i < playersNumber; i++)
+        {
+            if (i != currantPlayer)
+            {
+                Button newButton = Instantiate(PlayerButton, _layoutGroup.transform);
+                newButton.GetComponent<ButtonClick>()._buttInt = i;
+                newButton.transform.GetChild(0).GetComponent<TMP_Text>().text = "" + _PlayerNames[i].ToString();
+                _buttons.Add(newButton);
+            }
+        }
+
+        _winLooseLayoutgroup.gameObject.SetActive(false);
+        _layoutGroup.gameObject.SetActive(true);
     }
 
     //enter pass phase allowing players to pass phone between each other
@@ -183,8 +194,19 @@ public class PointSystem : MonoBehaviour
             
         _PauseTimer = true;
 
-        _buttons[currantPlayer].GetComponent<Image>().color = Color.white;
-        
+        //add a elment to the points list for every player in the game except host
+        for (int i = 0; i < playersNumber; i++)
+        {
+            if (i != currantPlayer)
+            {
+                Button newButton = Instantiate(PlayerButton, _layoutGroup.transform);
+                newButton.GetComponent<ButtonClick>()._buttInt = i;
+                newButton.transform.GetChild(0).GetComponent<TMP_Text>().text = "" + _PlayerNames[i].ToString();
+                _buttons.Add(newButton);
+            }
+        }
+
+
         if (_startOfGame == false)
         {
             
@@ -198,6 +220,8 @@ public class PointSystem : MonoBehaviour
                 currantPlayer++;
         }
         _startOfGame = false;
+
+        _buttons[currantPlayer].GetComponent<Image>().color = Color.white;
 
         _passUi.SetActive(true);
         _guessUi.SetActive(false);

@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    [SerializeField] private AudioSource[] audioSources;
+    [SerializeField] private AudioSource[] NextPersonSources;
+    [SerializeField] private AudioSource[] GetReadySources;
+    [SerializeField] private AudioSource[] GameDialogueSources;
+    [SerializeField] private AudioSource[] RandomSources;
 
     private void Start()
     {
@@ -12,17 +15,58 @@ public class AudioManager : MonoBehaviour
         // audioSources = new AudioSource[] { audioSource1, audioSource2, audioSource3, ... };
     }
 
-    public void PlayAudio()
+    public void PlayNextPerson()
     {
-        if (audioSources != null && audioSources.Length > 0)
+        if (NextPersonSources != null && NextPersonSources.Length > 0)
         {
-            int randomIndex = Random.Range(0, audioSources.Length);
+            int randomIndex = Random.Range(0, NextPersonSources.Length);
 
-            audioSources[randomIndex].Play();
+            NextPersonSources[randomIndex].Play();
         }
         else
         {
-            Debug.LogWarning("No AudioSources assigned to the list");
+            Debug.LogWarning("No NextPersonSources assigned to the list");
+        }
+    }
+
+    public void PlayGetReady()
+    {
+        if (GetReadySources != null && GetReadySources.Length > 0)
+        {
+            int randomIndex = Random.Range(0, GetReadySources.Length);
+
+            GetReadySources[randomIndex].Play();
+        }
+        else
+        {
+            Debug.LogWarning("No GetReadySources assigned to the list");
+        }
+    }
+
+    public void PlayGameDialogue()
+    {
+        if (GameDialogueSources != null && GameDialogueSources.Length > 0)
+        {
+            int randomIndex = Random.Range(0, GameDialogueSources.Length);
+
+            GameDialogueSources[randomIndex].Play();
+        }
+        else
+        {
+            Debug.LogWarning("No GameDialogueSources asassigned to the list");
+        }
+    }
+    public void PlayRandom()
+    {
+        if (RandomSources != null && RandomSources.Length > 0)
+        {
+            int randomIndex = Random.Range(0, RandomSources.Length);
+
+            RandomSources[randomIndex].Play();
+        }
+        else
+        {
+            Debug.LogWarning("No RandomSources asassigned to the list");
         }
     }
 }

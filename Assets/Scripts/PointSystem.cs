@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 using Button = UnityEngine.UI.Button;
 
 public class PointSystem : MonoBehaviour
@@ -66,6 +67,8 @@ public class PointSystem : MonoBehaviour
     [SerializeField] private GameObject TimerSlow;
     [SerializeField] private GameObject TimerMedium;
     [SerializeField] private GameObject TimerFast;
+
+    public UnityEvent OnPass;
 
     //List of themes
     [SerializeField] private string[] Themes;
@@ -227,7 +230,7 @@ public class PointSystem : MonoBehaviour
             Destroy(_layoutGroup.transform.GetChild(d).gameObject);
         }
 
-
+        OnPass.Invoke();
 
         TimerFast.gameObject.SetActive(false);
         TimerMedium.gameObject.SetActive(false);

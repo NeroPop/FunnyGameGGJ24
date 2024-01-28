@@ -30,7 +30,7 @@ Material:
     - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 0.5, y: 0.5}
-        m_Offset: {x: 0.6021589, y: -0.6021589}
+        m_Offset: {x: 0.002, y: -0.002}
     - _MaskTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}

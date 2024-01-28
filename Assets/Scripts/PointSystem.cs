@@ -15,7 +15,7 @@ public class PointSystem : MonoBehaviour
     [SerializeField] private List<int> _points = new List<int>();
     
     //currant time on timer
-    private float _timer;
+    public float _timer;
 
     //max time/ timelimit
     [SerializeField] private float maxTime;
@@ -59,8 +59,13 @@ public class PointSystem : MonoBehaviour
     [SerializeField] private TMP_Text _PlayerCountTxt;
     [SerializeField] private TMP_Text _roundNumText;
     [SerializeField] private Slider _roundNumSlider;
-
     [SerializeField] private TMP_Text _themeBufferText;
+
+    //reference to Audio sources
+    [Header("Audio")]
+    [SerializeField] private GameObject TimerSlow;
+    [SerializeField] private GameObject TimerMedium;
+    [SerializeField] private GameObject TimerFast;
 
     //List of themes
     [SerializeField] private string[] Themes;
@@ -119,6 +124,30 @@ public class PointSystem : MonoBehaviour
             _timer += 1 * Time.deltaTime;
             timerBar.value = _timer;
 
+            float quarterTime = maxTime / 4;
+            float halfTime = maxTime / 2;
+
+            if (_timer > quarterTime && _timer <= halfTime)
+            {
+                TimerFast.gameObject.SetActive(false);
+                TimerMedium.gameObject.SetActive(false);
+                TimerSlow.gameObject.SetActive(true);
+            }
+
+            else if (_timer > halfTime && _timer <= (3 * quarterTime))
+            {
+                TimerMedium.gameObject.SetActive(true);
+                TimerSlow.gameObject.SetActive(false);
+                TimerFast.gameObject.SetActive(false);
+            }
+
+            else if (_timer > (3 * quarterTime))
+            {
+                TimerSlow.gameObject.SetActive(false);
+                TimerFast.gameObject.SetActive(true);
+                TimerMedium.gameObject.SetActive(false);
+            }
+
             //resets timer if it is greater than max value ending turn and moveing to next pass stage
             if (_timer > maxTime)
             {
@@ -166,6 +195,10 @@ public class PointSystem : MonoBehaviour
     //dissables buffer button activating player buttons
     public void laugh()
     {
+        TimerFast.gameObject.SetActive(false);
+        TimerMedium.gameObject.SetActive(false);
+        TimerSlow.gameObject.SetActive(false);
+
         //insert some code here that gives the current host a point :)
         //_winLooseLayoutgroup.gameObject.SetActive(false);
         //_layoutGroup.gameObject.SetActive(true);
@@ -175,7 +208,11 @@ public class PointSystem : MonoBehaviour
 
 
     public void Guessed()
-    { 
+    {
+        TimerFast.gameObject.SetActive(false);
+        TimerMedium.gameObject.SetActive(false);
+        TimerSlow.gameObject.SetActive(false);
+
         _winLooseLayoutgroup.gameObject.SetActive(false);
         _layoutGroup.gameObject.SetActive(true);
         _PauseTimer = true;
@@ -190,9 +227,11 @@ public class PointSystem : MonoBehaviour
             Destroy(_layoutGroup.transform.GetChild(d).gameObject);
         }
 
-        
-        
 
+
+        TimerFast.gameObject.SetActive(false);
+        TimerMedium.gameObject.SetActive(false);
+        TimerSlow.gameObject.SetActive(false);
         _PauseTimer = true;
 
         
@@ -259,6 +298,7 @@ public class PointSystem : MonoBehaviour
         _winLooseLayoutgroup.gameObject.SetActive(true);
         //_layoutGroup.gameObject.SetActive(false);
         _PauseTimer = false;
+
     }
 
     //end of game, shows winners and gives player options to play again or go back to main menu

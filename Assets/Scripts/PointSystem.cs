@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using static UnityEngine.Rendering.DebugUI;
 using Button = UnityEngine.UI.Button;
 using UnityEditor.Animations;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 
 public class PointSystem : MonoBehaviour
 {
@@ -35,7 +36,7 @@ public class PointSystem : MonoBehaviour
     [SerializeField] private int _maxRound;
 
     //Is the timer paused?
-    [SerializeField] private bool _PauseTimer = false;
+    [SerializeField] private bool _PauseTimer = true;
 
     //References to UI panels
     [Header ("UI Panels")]
@@ -61,6 +62,9 @@ public class PointSystem : MonoBehaviour
     [SerializeField] private TMP_Text _roundNumText;
     [SerializeField] private Slider _roundNumSlider;
 
+    [SerializeField] private GameObject _themeBuffer;
+    [SerializeField] private TMP_Text _themeBufferText;
+
     //List of themes
     [SerializeField] private string[] Themes;
 
@@ -68,6 +72,8 @@ public class PointSystem : MonoBehaviour
     [SerializeField] private List<string> _PlayerNames = new List<string>();
 
     private bool _startOfGame = true;
+
+    private string _selectedTheme;
 
     // Start is called before the first frame update
     private void Start()
@@ -101,7 +107,6 @@ public class PointSystem : MonoBehaviour
         _winLooseLayoutgroup.gameObject.SetActive(true);
         _layoutGroup.gameObject.SetActive(false);
         _nameUI.gameObject.SetActive(false);
-        _PauseTimer = false;
     }
 
     // Update is called once per frame
@@ -139,7 +144,7 @@ public class PointSystem : MonoBehaviour
             return;
  
         _timer = 0;
-        _themeText.SetText(Themes[Random.Range(0, Themes.Length)]);
+        
     }
 
     //awards points to player who won
@@ -168,6 +173,7 @@ public class PointSystem : MonoBehaviour
     { 
         _winLooseLayoutgroup.gameObject.SetActive(false);
         _layoutGroup.gameObject.SetActive(true);
+        _PauseTimer = true;
     }
 
     //enter pass phase allowing players to pass phone between each other
@@ -226,14 +232,27 @@ public class PointSystem : MonoBehaviour
 
     }
 
+    public void themeBuffer()
+    {
+        _selectedTheme = Themes[Random.Range(0, Themes.Length)];
+        _themeText.SetText(_selectedTheme);
+        _themeBufferText.SetText(_selectedTheme);
+
+        _layoutGroup.gameObject.SetActive(false);
+        _passUi.SetActive(false);
+        
+        _themeBuffer.SetActive(true);
+    }
+
     //progresses to next phase when player click redy button in pase phase
     public void ready()
     {
-        _passUi.SetActive(false);
+        _themeBuffer.SetActive(false);
+        //_passUi.SetActive(false);
         _guessUi.SetActive(true);
         reRoll();
         _winLooseLayoutgroup.gameObject.SetActive(true);
-        _layoutGroup.gameObject.SetActive(false);
+        //_layoutGroup.gameObject.SetActive(false);
         _PauseTimer = false;
     }
 

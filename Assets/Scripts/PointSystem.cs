@@ -44,6 +44,7 @@ public class PointSystem : MonoBehaviour
     [SerializeField] private GameObject _guideUI;
     [SerializeField] private GameObject _creditsUI;
     [SerializeField] private GameObject _mainMenuUI;
+    [SerializeField] private GameObject _themeBuffer;
 
     //References to UI elments
     [Header("UI Elements")]
@@ -59,7 +60,6 @@ public class PointSystem : MonoBehaviour
     [SerializeField] private TMP_Text _roundNumText;
     [SerializeField] private Slider _roundNumSlider;
 
-    [SerializeField] private GameObject _themeBuffer;
     [SerializeField] private TMP_Text _themeBufferText;
 
     //List of themes

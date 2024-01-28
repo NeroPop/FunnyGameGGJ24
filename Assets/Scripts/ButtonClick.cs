@@ -14,7 +14,8 @@ public class ButtonClick : MonoBehaviour
 
     public void Win()
     {
-        gameManager.GetComponent<PointSystem>().win();
+        gameManager.GetComponent<PointSystem>().playerThatGuessed = _buttInt;
+        gameManager.GetComponent<PointSystem>().loose();
     }
 
 }

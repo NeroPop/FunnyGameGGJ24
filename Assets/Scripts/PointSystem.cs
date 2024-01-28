@@ -75,6 +75,8 @@ public class PointSystem : MonoBehaviour
 
     private string _selectedTheme;
 
+    public int playerThatGuessed;
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -153,6 +155,12 @@ public class PointSystem : MonoBehaviour
         _points[currantPlayer]++;
         pass();
 
+    }
+
+    public void loose()
+    {
+        _points[playerThatGuessed]++;
+        pass();
     }
 
     //Don't think this dose anything anymore but to afried to get rid of it...

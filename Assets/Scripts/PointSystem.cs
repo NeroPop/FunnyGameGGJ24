@@ -86,6 +86,7 @@ public class PointSystem : MonoBehaviour
     private void Start()
     {
         _mainMenuUI.gameObject.SetActive(true);
+        _PauseTimer = true;
         
     }
 

@@ -8389,10 +8389,10 @@ MonoBehaviour:
   - Crazy Conspiracy Theories
   - The Person to your Left
   - The current weather
-  - The current weather
   - Recent News
   - Person to your Right
   - Your last text message
+  - The next person who touches their face
   _PlayerNames: []
   playerThatGuessed: 0
 --- !u!4 &1442734440

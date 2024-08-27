@@ -86,6 +86,7 @@ public class PointSystem : MonoBehaviour
     private void Start()
     {
         _mainMenuUI.gameObject.SetActive(true);
+        _PauseTimer = true;
         
     }
 
@@ -328,7 +329,7 @@ public class PointSystem : MonoBehaviour
     //restarts game
     public void Restart()
     {
-        SceneManager.LoadScene("Main");
+        SceneManager.LoadScene(0);
     }
 
     public void AddName()
